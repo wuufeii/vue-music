@@ -4,10 +4,9 @@
 
 <script>
 export default {
-  name: 'HelloWorld'
+  name: 'Search'
 }
 </script>
 
-<style>
-
+<style lang="stylus" rel="stylesheet/stylus">
 </style>
