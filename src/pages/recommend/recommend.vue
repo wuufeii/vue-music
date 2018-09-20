@@ -3,8 +3,8 @@
     <div class="recommend-content">
       <div>
         <swiper :options="swiperOption" class="slider">
-          <swiper :options="swiperOption" v-if="recommends.length">
-            <swiper-slide v-for="item of recommends" :key="item.id">
+          <swiper :options="swiperOption" v-if="sliders.length">
+            <swiper-slide v-for="item of sliders" :key="item.id">
               <a :href="item.linkUrl">
                 <img class="swiper-img" :src="item.picUrl">
               </a>
@@ -14,18 +14,18 @@
           <div class="swiper-pagination" slot="pagination"></div>
         </swiper>
         <div class="recommend-list">
-          <h1 class="list-title">热门歌单推荐</h1>
-          <ul>
-            <!-- <li v-for="item in discList" class="item">
-              <div class="icon">
-                <img width="60" height="60" v-lazy="item.imgurl">
-              </div>
-              <div class="text">
-                <h2 class="name" v-html="item.creator.name"></h2>
-                <p class="desc" v-html="item.dissname"></p>
-              </div>
-            </li> -->
-          </ul>
+          <h1 class="list-title">热门歌单</h1>
+          <div class="item" v-for="item in songLists" :key="item.id">
+            <div class="img">
+              <img :src="item.picUrl">
+            </div>
+            <div class="desc">
+              {{item.songListDesc}}
+            </div>
+            <div class="name">
+              {{item.songListAuthor}}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -33,12 +33,13 @@
 </template>
 
 <script type="text/ecmascript-6">
-import {getRecommend, getDiscList} from 'api/recommend'
+import {getRecommend} from 'api/recommend'
 import {ERR_OK} from 'api/config'
 export default{
   data () {
     return {
-      recommends: [],
+      sliders: [],
+      songLists: [],
       swiperOption: {
         autoplay: true,
         loop: true,
@@ -51,22 +52,14 @@ export default{
   },
   created () {
     this._getRecommend()
-    this._getDiscList()
   },
   methods: {
     _getRecommend () {
       getRecommend().then((res) => {
         if (res.code === ERR_OK) {
-          this.recommends = res.data.slider
-        }
-      })
-    },
-    _getDiscList () {
-      getDiscList().then((res) => {
-        if (res.code === ERR_OK) {
-          this.discList = res.data.list
-          console.log(this.discList)
-          console.log('ssssss')
+          console.log(res.data)
+          this.sliders = res.data.slider
+          this.songLists = res.data.songList
         }
       })
     }
@@ -78,7 +71,6 @@ export default{
   @import "~assets/stylus/variable"
 
   .recommend
-    position: fixed
     width: 100%
     top: 88px
     bottom: 0
@@ -90,6 +82,8 @@ export default{
         img
           width:100%;
       .recommend-list
+        overflow: hidden
+        margin-bottom:20px
         .list-title
           height: 65px
           line-height: 65px
@@ -97,30 +91,29 @@ export default{
           font-size: $font-size-medium
           color: $color-theme
         .item
-          display: flex
           box-sizing: border-box
           align-items: center
-          padding: 0 20px 20px 20px
-          .icon
-            flex: 0 0 60px
-            width: 60px
-            padding-right: 20px
-          .text
-            display: flex
-            flex-direction: column
-            justify-content: center
-            flex: 1
-            line-height: 20px
-            overflow: hidden
-            font-size: $font-size-medium
-            .name
-              margin-bottom: 10px
-              color: $color-text
-            .desc
-              color: $color-text-d
-      .loading-container
-        position: absolute
-        width: 100%
-        top: 50%
-        transform: translateY(-50%)
+          width:calc(50% - 8px)
+          float:left
+          background-color:#333
+          margin:10px 4px 0
+          overflow：hidden
+          .img
+            width:100%
+            img
+              width:100%
+          .desc
+            color: $color-text-d
+            padding:5px
+            font-size:14px
+            text-overflow:ellipsis
+            overflow:hidden
+            white-space:nowrap
+          .name
+            color: $color-text-d
+            padding:5px
+            font-size:14px
+            text-overflow:ellipsis
+            overflow:hidden
+            white-space:nowrap
 </style>
