@@ -1,21 +1,33 @@
 <template>
-  <scroll class="listview">
+  <scroll class="listview" :data="data" ref="listview">
     <ul>
-      <li v-for="group in data" :key="group.title" class="list-group">
+      <li v-for="group in data" :key="group.title"
+          class="list-group" ref="listGroup">
         <h2 class="list-group-title">{{group.title}}</h2>
-        <uL>
+        <ul>
           <li v-for="item in group.items" :key="item.id" class="list-group-item">
             <img class="avatar" v-lazy="item.avatar">
             <span class="name">{{item.name}}</span>
           </li>
-        </uL>
+        </ul>
       </li>
     </ul>
+    <div class="list-shortcut">
+      <ul @touchstart="onShortcutTouchStart">
+        <li v-for="(item,index) in shortcutList"
+            :key="index"
+            :data-index="index"
+            class="item">
+          {{item}}
+        </li>
+      </ul>
+    </div>
   </scroll>
 </template>
 
 <script type="text/ecmascript-6">
 import Scroll from 'components/scroll/scroll'
+import {getData} from 'assets/js/dom'
 
 export default {
   props: {
@@ -23,6 +35,20 @@ export default {
   },
   components: {
     Scroll
+  },
+  computed: {
+    shortcutList () {
+      return this.data.map((group) => {
+        return group.title.substr(0, 1)
+      })
+    }
+  },
+  methods: {
+    onShortcutTouchStart (e) {
+      let anchorIndex = getData(e.target, 'index')
+      console.log(anchorIndex)
+      this.$refs.listview.scrollToElement(this.$refs.listGroup[anchorIndex], 0)
+    }
   }
 }
 </script>
