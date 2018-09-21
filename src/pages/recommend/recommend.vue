@@ -70,7 +70,6 @@ export default{
     _getRecommend () {
       getRecommend().then((res) => {
         if (res.code === ERR_OK) {
-          console.log(res.data)
           this.sliders = res.data.slider
           this.songLists = res.data.songList
         }
