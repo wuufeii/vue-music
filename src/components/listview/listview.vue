@@ -7,11 +7,16 @@
           ref="listview"
           >
     <ul>
-      <li v-for="group in data" :key="group.title"
-          class="list-group" ref="listGroup">
+      <li v-for="group in data"
+          :key="group.title"
+          class="list-group"
+          ref="listGroup">
         <h2 class="list-group-title">{{group.title}}</h2>
         <ul>
-          <li v-for="item in group.items" :key="item.id" class="list-group-item">
+          <li v-for="item in group.items"
+              :key="item.id"
+              @click="selectItem(item)"
+              class="list-group-item">
             <img class="avatar" v-lazy="item.avatar">
             <span class="name">{{item.name}}</span>
           </li>
@@ -99,6 +104,9 @@ export default {
     },
     scroll (pos) {
       this.scrollY = pos.y
+    },
+    selectItem (item) {
+      this.$emit('selcet', item)
     },
     _scrollTo (index) {
       if (!index && index !== 0) {
