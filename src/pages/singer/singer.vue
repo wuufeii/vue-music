@@ -33,12 +33,14 @@ export default {
       this.$router.push({
         path: `/singer/${singer.id}`
       })
+      console.log(singer)
       this.setSinger(singer)
     },
     _getSingerList () {
       getSingerList().then((res) => {
         if (res.code === ERR_OK) {
           this.singers = this._normalizeSinger(res.data.list)
+          console.log(this.singers)
         }
       })
     },
