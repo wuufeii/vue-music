@@ -10,7 +10,18 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+        '/api/getSearch': {
+            target: 'https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp',
+            bypass: function (req, res, proxyOptions) {
+                req.headers.referer = 'https://c.y.qq.com';
+                req.headers.host = 'c.y.qq.com';
+            },
+            pathRewrite: {
+                '^/api/getSearch': ''
+            }
+        }
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
@@ -50,7 +61,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: './',
 
     /**
      * Source Maps
