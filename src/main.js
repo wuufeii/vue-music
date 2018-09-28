@@ -11,7 +11,7 @@ import 'swiper/dist/css/swiper.css'
 
 Vue.use(VueAwesomeSwiper)
 Vue.use(vueLazyload, {
-  loading: require('assets/img/default.png')
+  loading: require('assets/img/default.jpg')
 })
 
 Vue.config.productionTip = false

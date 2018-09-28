@@ -2,10 +2,12 @@
   <scroll class="suggest"
           :data="result"
           :pullup="true"
+          :beforeScroll="beforeScroll"
           @scrollToEnd="searchMore"
+          @beforeScroll="listScroll"
           ref="suggest">
     <ul class="suggest-list">
-      <li class="suggest-item"
+      <li @click="selectItem(item)" class="suggest-item"
           v-for="(item,index) in result"
           :key="index">
         <div class="icon">
@@ -17,6 +19,7 @@
       </li>
       <loading v-show="hasMore"></loading>
     </ul>
+    <no-result title="很抱歉，找不到你想要的" v-show="!hasMore || !result.length" class="no-result-wrapper"></no-result>
   </scroll>
 </template>
 
@@ -26,6 +29,9 @@ import loading from 'components/loading/loading'
 import {search} from 'api/search'
 import {ERR_OK} from 'api/config'
 import {createSong} from 'assets/js/song'
+import Singer from 'assets/js/singer'
+import {mapMutations} from 'vuex'
+import NoResult from 'components/no-result/no-result'
 
 const TYPE_SINGER = 'singer'
 const perpage = 20
@@ -33,7 +39,8 @@ const perpage = 20
 export default {
   components: {
     Scroll,
-    loading
+    loading,
+    NoResult
   },
   props: {
     showSinger: {
@@ -50,6 +57,7 @@ export default {
       page: 1,
       result: [],
       pullup: true,
+      beforeScroll: true,
       hasMore: true
     }
   },
@@ -91,6 +99,22 @@ export default {
         }
       })
     },
+    selectItem (item) {
+      if (item.type === TYPE_SINGER) {
+        const singer = new Singer({
+          id: item.singermid,
+          name: item.singername
+        })
+        this.$router.push({
+          path: `/search/${singer.id}`
+        })
+        this.setSinger(singer)
+      }
+      this.$emit('select', item)
+    },
+    listScroll () {
+      this.$emit('listScroll')
+    },
     _genResult (data) {
       let ret = []
       if (data.zhida && data.zhida.singerid) {
@@ -112,10 +136,13 @@ export default {
     },
     _checkMore (data) {
       const song = data.song
-      if (!song.list.length || (song.curnum + song.curpage * perpage) >= song.totalnum) {
+      if (!song.list.length && (song.curnum + song.curpage * perpage) >= song.totalnum) {
         this.hasMore = false
       }
-    }
+    },
+    ...mapMutations({
+      setSinger: 'SET_SINGER'
+    })
   },
   watch: {
     query (newQuery) {

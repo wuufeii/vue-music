@@ -10,6 +10,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+import {debounce} from 'assets/js/util'
 
 export default {
   props: {
@@ -35,9 +36,9 @@ export default {
     }
   },
   created () {
-    this.$watch('query', (newQuery) => {
+    this.$watch('query', debounce((newQuery) => {
       this.$emit('query', newQuery)
-    })
+    }, 200))
   }
 }
 </script>
