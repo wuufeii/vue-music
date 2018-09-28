@@ -1,5 +1,5 @@
 import * as types from './mutation-types'
-import {saveSearch, deleteSearch} from 'assets/js/cache'
+import {saveSearch, deleteSearch, clearSearch} from 'assets/js/cache'
 
 export const saveSearchHistory = function ({commit}, query) {
   commit(types.SET_SEARCH_HISTORY, saveSearch(query))
@@ -7,4 +7,8 @@ export const saveSearchHistory = function ({commit}, query) {
 
 export const deleteSearchHistory = function ({commit}, query) {
   commit(types.SET_SEARCH_HISTORY, deleteSearch(query))
+}
+
+export const clearSearchHistory = function ({commit}) {
+  commit(types.SET_SEARCH_HISTORY, clearSearch())
 }

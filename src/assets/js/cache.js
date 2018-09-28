@@ -42,6 +42,11 @@ export function deleteSearch (query) {
   return searches
 }
 
+export function clearSearch () {
+  storage.remove(SEARCH_KEY)
+  return []
+}
+
 export function loadSearch () {
   return storage.get(SEARCH_KEY, [])
 }
