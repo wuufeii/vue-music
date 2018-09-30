@@ -43,11 +43,11 @@
             <span class="dot"></span>
           </div>
           <div class="progress-wrapper">
-            <span class="time time-l"></span>
+            <span class="time time-l">{{format(currentTime)}}</span>
             <div class="progress-bar-wrapper">
-              <div></div>
+              <progress-bar :percent="percent" @percentChange="onProgressBarChange"></progress-bar>
             </div>
-            <span class="time time-r"></span>
+            <span class="time time-r">{{format(currentSong.duration)}}</span>
           </div>
           <div class="operators">
             <div class="icon i-left">
@@ -79,8 +79,9 @@
           <p class="desc" v-html="currentSong.singer"></p>
         </div>
         <div class="control">
-          <i :class="miniIcon"
-             @click.stop="togglePlaying"></i>
+          <progress-circle :radius="radius" :percent="percent">
+            <i @click.stop="togglePlaying" class="icon-mini" :class="miniIcon"></i>
+          </progress-circle>
         </div>
         <div class="control">
           <i class="icon-playlist"></i>
@@ -90,24 +91,34 @@
     <audio ref="audio"
           :src="currentSong.url"
           @canplay="ready"
-          @error="error"></audio>
+          @error="error"
+          @timeupdate="updateTime"></audio>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 
 import Scroll from 'components/scroll/scroll'
-import {mapGetters, mapMutations} from 'vuex'
 import animations from 'create-keyframe-animation'
+import ProgressBar from 'components/progress-bar/progress-bar'
+import ProgressCircle from 'components/progress-circle/progress-circle'
+import {mapGetters, mapMutations} from 'vuex'
 import {prefixStyle} from 'assets/js/dom'
 
 const transform = prefixStyle('transform')
 
 export default {
   name: 'Player',
+  components: {
+    Scroll,
+    ProgressBar,
+    ProgressCircle
+  },
   data () {
     return {
-      songReady: false
+      songReady: false,
+      currentTime: 0,
+      radius: 32
     }
   },
   computed: {
@@ -221,6 +232,25 @@ export default {
     error () {
       this.songReady = true
     },
+    updateTime (e) {
+      this.currentTime = e.target.currentTime
+    },
+    format (interval) {
+      interval = interval | 0
+      const minute = interval / 60 | 0
+      const second = this._pad(interval % 60)
+      return `${minute}:${second}`
+    },
+    onProgressBarChange (percent) {
+      const currentTime = this.currentSong.duration * percent
+      this.$refs.audio.currentTime = currentTime
+      if (!this.playing) {
+        this.togglePlaying()
+      }
+      /*  if (this.currentLyric) {
+        this.currentLyric.seek(currentTime * 1000)
+      }  */
+    },
     _getPosAndScale () {
       const targetWidth = 40
       const paddingLeft = 40
@@ -235,6 +265,14 @@ export default {
         y,
         scale
       }
+    },
+    _pad (num, n = 2) {
+      let len = num.toString().length
+      while (len < n) {
+        num = '0' + num
+        len++
+      }
+      return num
     },
     ...mapMutations({
       setFullScreen: 'SET_FULL_SCREEN',
@@ -254,9 +292,6 @@ export default {
         newPlaying ? audio.play() : audio.pause()
       })
     }
-  },
-  components: {
-    Scroll
   }
 }
 </script>
