@@ -3,8 +3,8 @@
     <div class="search-box-wrapper">
       <search-box ref="searchBox" @query="onQueryChange"></search-box>
     </div>
-    <div class="shortcut-wrapper" v-show="!query">
-      <div class="shortcut">
+    <div ref="shortcutWrapper" class="shortcut-wrapper" v-show="!query">
+      <scroll ref="shortcut" class="shortcut" :data="shortcut">
         <div>
           <div class="hot-key">
             <h1 class="title">热门搜索</h1>
@@ -27,10 +27,10 @@
             <search-list @delete="deleteSearchHistory" @select="addQuery" :searches="searchHistory"></search-list>
           </div>
         </div>
-      </div>
+      </scroll>
     </div>
-    <div class="search-result" v-show="query">
-      <suggest @select="saveSearch" @listScroll="blurInput" :query="query"></suggest>
+    <div class="search-result" v-show="query" ref="searchResult">
+      <suggest @select="saveSearch" @listScroll="blurInput" :query="query" ref="suggest"></suggest>
     </div>
     <confirm @confirm="clearSearchHistory" ref="confirm" text="是否清空所有搜索历史" confirmBtnText="清空"></confirm>
     <router-view></router-view>
@@ -42,17 +42,21 @@ import SearchBox from 'components/search-box/search-box'
 import Suggest from 'components/suggest/suggest'
 import SearchList from 'components/search-list/search-list'
 import Confirm from 'components/confirm/confirm'
+import Scroll from 'components/scroll/scroll'
 import {getHotKey} from 'api/search'
 import {ERR_OK} from 'api/config'
 import {mapActions, mapGetters} from 'vuex'
+import {playlistMixin} from 'assets/js/mixin'
 
 export default {
+  mixins: [playlistMixin],
   name: 'Search',
   components: {
     SearchBox,
     Suggest,
     SearchList,
-    Confirm
+    Confirm,
+    Scroll
   },
   created () {
     this._getHotKey()
@@ -66,7 +70,10 @@ export default {
   computed: {
     ...mapGetters([
       'searchHistory'
-    ])
+    ]),
+    shortcut () {
+      return this.hotKey.concat(this.searchHistory)
+    }
   },
   methods: {
     addQuery (query) {
@@ -83,6 +90,15 @@ export default {
     },
     showConfirm () {
       this.$refs.confirm.show()
+    },
+    handlePlaylist (playlist) {
+      const bottom = playlist.length > 0 ? '60px' : ''
+
+      this.$refs.searchResult.style.bottom = bottom
+      this.$refs.suggest.refresh()
+
+      this.$refs.shortcutWrapper.style.bottom = bottom
+      this.$refs.shortcut.refresh()
     },
     _getHotKey () {
       getHotKey().then((res) => {

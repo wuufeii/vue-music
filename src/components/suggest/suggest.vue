@@ -30,7 +30,7 @@ import {search} from 'api/search'
 import {ERR_OK} from 'api/config'
 import {createSong} from 'assets/js/song'
 import Singer from 'assets/js/singer'
-import {mapMutations} from 'vuex'
+import {mapMutations, mapActions} from 'vuex'
 import NoResult from 'components/no-result/no-result'
 
 const TYPE_SINGER = 'singer'
@@ -109,11 +109,16 @@ export default {
           path: `/search/${singer.id}`
         })
         this.setSinger(singer)
+      } else {
+        this.insertSong(item)
       }
       this.$emit('select', item)
     },
     listScroll () {
       this.$emit('listScroll')
+    },
+    refresh () {
+      this.$refs.suggest.refresh()
     },
     _genResult (data) {
       let ret = []
@@ -142,7 +147,10 @@ export default {
     },
     ...mapMutations({
       setSinger: 'SET_SINGER'
-    })
+    }),
+    ...mapActions([
+      'insertSong'
+    ])
   },
   watch: {
     query (newQuery) {
