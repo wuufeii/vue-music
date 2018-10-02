@@ -9,8 +9,8 @@
 ```
 
 
-> 这是一个音乐APP，图片等数据来源来自去[QQ音乐](https://y.qq.com)
-*在此，感谢去[QQ音乐](https://y.qq.com)*
+> 这是一个音乐APP，图片等数据来源来自去[QQ音乐](https://y.qq.com) <br />
+*在此，感谢[QQ音乐](https://y.qq.com)*
 
 ## 项目的效果图
 
