@@ -1,3 +1,6 @@
+import {getLyric} from 'api/song'
+import {ERR_OK} from 'api/config'
+import {Base64} from 'js-base64'
 
 export default class Song {
   constructor ({id, mid, singer, name, album, duration, image, url}) {
@@ -10,6 +13,21 @@ export default class Song {
     this.image = image
     this.url = url
   }
+
+  getLyric () {
+    if (this.lyric) {
+      return Promise.resolve(this.lyric)
+    }
+
+    return new Promise((resolve, reject) => {
+      getLyric(this.mid).then((res) => {
+        if (res.retcode === ERR_OK) {
+          this.lyric = Base64.decode(res.lyric)
+          resolve(this.lyric)
+        } else {}
+      })
+    })
+  }
 }
 
 export function createSong (musicData) {
@@ -21,7 +39,7 @@ export function createSong (musicData) {
     album: musicData.albumname,
     duration: musicData.interval,
     image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.albummid}.jpg?max_age=2592000`,
-    url: `http://182.140.219.19/amobile.music.tc.qq.com/C400${musicData.songmid}.m4a?guid=792787692&vkey=CD2A5896B5C4B0E1E7AF8F1CE3444B80E3F8E48F4C4B46115B714B8C3C1CD2C6FF1ED6CDA1AC3AC08005EEFB0977685A9F5494B04541459E&uin=0&fromtag=38`
+    url: `http://182.140.219.19/amobile.music.tc.qq.com/C400${musicData.songmid}.m4a?guid=792787692&vkey=4D1E0EF83602176FF46ED295CB3845604C54766A9483398CD01AF2057E72F4EE5E67A243C7671CE3AB68A6853440AEFEADA8668D2ED5C06A&uin=0&fromtag=38`
   })
 }
 

@@ -1,5 +1,7 @@
 import * as types from './mutation-types'
 import {saveSearch, deleteSearch, clearSearch} from 'assets/js/cache'
+import {playMode} from 'assets/js/config'
+import {shuffle} from 'assets/js/util'
 
 export const saveSearchHistory = function ({commit}, query) {
   commit(types.SET_SEARCH_HISTORY, saveSearch(query))
@@ -13,10 +15,32 @@ export const clearSearchHistory = function ({commit}) {
   commit(types.SET_SEARCH_HISTORY, clearSearch())
 }
 
+function findIndex (list, song) {
+  return list.findIndex((item) => {
+    return item.id === song.id
+  })
+}
+
 export const selectPlay = function ({commit, state}, {list, index}) {
   commit(types.SET_SEQUENCE_LIST, list)
-  commit(types.SET_PLAYLIST, list)
+  if (state.mode === playMode.random) {
+    let randomList = shuffle(list)
+    commit(types.SET_PLAY_LIST, randomList)
+    index = findIndex(randomList, list[index])
+  } else {
+    commit(types.SET_PLAY_LIST, list)
+  }
   commit(types.SET_CURRENT_INDEX, index)
+  commit(types.SET_FULL_SCREEN, true)
+  commit(types.SET_PLAYING_STATE, true)
+}
+
+export const randomPlay = function ({commit}, {list}) {
+  commit(types.SET_PLAY_MODE, playMode.random)
+  commit(types.SET_SEQUENCE_LIST, list)
+  let randomList = shuffle(list)
+  commit(types.SET_PLAY_LIST, randomList)
+  commit(types.SET_CURRENT_INDEX, 0)
   commit(types.SET_FULL_SCREEN, true)
   commit(types.SET_PLAYING_STATE, true)
 }

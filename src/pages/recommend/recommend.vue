@@ -1,6 +1,6 @@
 <template>
-  <div class="recommend">
-    <scroll ref="scroll" class="recommend-content" :data="sliders">
+  <div class="recommend" ref="recommend">
+    <scroll ref="scroll" class="recommend-content" :data="topList">
       <div>
           <swiper :options="swiperOption" class="slider" v-if="sliders.length">
             <swiper-slide v-for="item of sliders" :key="item.id">
@@ -38,9 +38,11 @@ import {getRecommend} from 'api/recommend'
 import {getTopList} from 'api/rank'
 import {ERR_OK} from 'api/config'
 import {mapMutations} from 'vuex'
+import {playlistMixin} from 'assets/js/mixin'
 import scroll from 'components/scroll/scroll'
 import loading from 'components/loading/loading'
 export default{
+  mixins: [playlistMixin],
   name: 'Recommend',
   components: {
     scroll,
@@ -77,6 +79,11 @@ export default{
       })
       console.log(item)
       this.setTopList(item)
+    },
+    handlePlaylist (playlist) {
+      const bottom = playlist.length > 0 ? '60px' : ''
+      this.$refs.recommend.style.bottom = bottom
+      this.$refs.scroll.refresh()
     },
     _getRecommend () {
       getRecommend().then((res) => {
@@ -118,7 +125,6 @@ export default{
           width:100%
       .recommend-list
         overflow: hidden
-        margin-bottom:20px
         .list-title
           height: 50px
           line-height: 50px

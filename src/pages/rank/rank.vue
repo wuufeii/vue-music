@@ -34,7 +34,7 @@ import {playlistMixin} from 'assets/js/mixin'
 import {mapMutations} from 'vuex'
 
 export default {
-  mixin: [playlistMixin],
+  mixins: [playlistMixin],
   created () {
     this._getTopList()
   },

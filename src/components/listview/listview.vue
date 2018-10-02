@@ -108,6 +108,9 @@ export default {
     selectItem (item) {
       this.$emit('selcet', item)
     },
+    refresh () {
+      this.$refs.listview.refresh()
+    },
     _scrollTo (index) {
       if (!index && index !== 0) {
         return
