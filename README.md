@@ -15,14 +15,66 @@
 ## 项目的效果图
 
 想要看看项目的效果是怎样的？来吧——[传送门](https://wuufeii.github.io/music/index.html) <br />
-*注：请使用手机浏览器查看哦*
-   *如果使用pc浏览器，请调成手机模拟查看*
+*注：请使用手机浏览器查看哦* <br />
+   *如果使用pc浏览器，请调成手机模拟查看* <br />
    *由于QQ音乐数据在不断更新，可能抓取的数据链接不对，如有需要请自行更改最新链接*
 
 ## 项目截图
 
-     效果图
-更新中...
+     推荐页面效果图
+<div align="center">
+  <img width="300" src="https://github.com/wuufeii/html-css/blob/master/assets/img-music/1.jpg"/>
+</div>
+
+     歌手页面效果图
+<div align="center">
+  <img width="300" src="https://github.com/wuufeii/html-css/blob/master/assets/img-music/2.jpg"/>
+</div>
+
+     排行榜页面效果图
+<div align="center">
+  <img width="300" src="https://github.com/wuufeii/html-css/blob/master/assets/img-music/3.jpg"/>
+</div>
+
+     搜索页面效果图
+<div align="center">
+  <img width="300" src="https://github.com/wuufeii/html-css/blob/master/assets/img-music/4.jpg"/>
+</div>
+
+     歌手详情页面效果图
+<div align="center">
+  <img width="300" src="https://github.com/wuufeii/html-css/blob/master/assets/img-music/5.jpg"/>
+</div>
+
+     排行榜详情页面效果图
+<div align="center">
+  <img width="300" src="https://github.com/wuufeii/html-css/blob/master/assets/img-music/6.jpg"/>
+</div>
+
+     播放器页面效果图
+<div align="center">
+  <img width="300" src="https://github.com/wuufeii/html-css/blob/master/assets/img-music/7.jpg"/>
+</div>
+
+     播放器(歌词)页面效果图
+<div align="center">
+  <img width="300" src="https://github.com/wuufeii/html-css/blob/master/assets/img-music/8.jpg"/>
+</div>
+
+     播放列表页面效果图
+<div align="center">
+  <img width="300" src="https://github.com/wuufeii/html-css/blob/master/assets/img-music/9.jpg"/>
+</div>
+
+     最近播放页面效果图
+<div align="center">
+  <img width="300" src="https://github.com/wuufeii/html-css/blob/master/assets/img-music/10.jpg"/>
+</div>
+
+     搜索列表页面效果图
+<div align="center">
+  <img width="300" src="https://github.com/wuufeii/html-css/blob/master/assets/img-music/11.jpg"/>
+</div>
   
 
 ## 项目如何使用
