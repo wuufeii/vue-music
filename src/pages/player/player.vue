@@ -67,7 +67,7 @@
               <i @click="next" class="icon-next"></i>
             </div>
             <div class="icon i-right">
-              <i class="icon" @click="handFavoriteIcon" :class="favoriteIcon"></i>
+              <i class="icon" @click="toggleFavorite(currentSong)" :class="getFavoriteIcon(currentSong)"></i>
             </div>
           </div>
         </div>
@@ -95,7 +95,7 @@
     <playlist ref="playlist"></playlist>
     <audio ref="audio"
           :src="currentSong.url"
-          @canplay="ready"
+          @play="ready"
           @error="error"
           @timeupdate="updateTime"
           @ended="end"></audio>
@@ -148,9 +148,6 @@ export default {
     },
     miniIcon () {
       return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
-    },
-    favoriteIcon () {
-      return this.favorite ? 'icon-favorite' : 'icon-not-favorite'
     },
     disableCls () {
       return this.songReady ? '' : 'disable'
@@ -229,6 +226,7 @@ export default {
       }
       if (this.playlist.length === 1) {
         this.loop()
+        return
       } else {
         let index = this.currentIndex + 1
         if (index === this.playlist.length) {
@@ -247,6 +245,7 @@ export default {
       }
       if (this.playlist.length === 1) {
         this.loop()
+        return
       } else {
         let index = this.currentIndex - 1
         if (index === -1) {
@@ -302,6 +301,9 @@ export default {
     },
     getLyric () {
       this.currentSong.getLyric().then((lyric) => {
+        if (this.currentSong.lyric !== lyric) {
+          return
+        }
         this.currentLyric = new Lyric(lyric, this.handleLyric)
         if (this.playing) {
           this.currentLyric.play()
@@ -374,9 +376,6 @@ export default {
       this.$refs.middleL.style.opacity = opacity
       this.$refs.middleL.style[transitionDuration] = `${time}ms`
     },
-    handFavoriteIcon () {
-      this.favorite = !this.favorite
-    },
     showPlaylist () {
       this.$refs.playlist.show()
     },
@@ -420,8 +419,12 @@ export default {
       }
       if (this.currentLyric) {
         this.currentLyric.stop()
+        this.currentTime = 0
+        this.playingLyric = ''
+        this.currentLineNum = 0
       }
-      setTimeout(() => {
+      clearTimeout(this.timer)
+      this.timer = setTimeout(() => {
         this.$refs.audio.play()
         this.getLyric()
       }, 1000)
