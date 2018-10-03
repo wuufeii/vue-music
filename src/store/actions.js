@@ -1,5 +1,5 @@
 import * as types from './mutation-types'
-import {saveSearch, deleteSearch, clearSearch} from 'assets/js/cache'
+import {saveSearch, deleteSearch, clearSearch, savePlay} from 'assets/js/cache'
 import {playMode} from 'assets/js/config'
 import {shuffle} from 'assets/js/util'
 
@@ -116,4 +116,8 @@ export const deleteSongList = function ({commit}) {
   commit(types.SET_PLAY_LIST, [])
   commit(types.SET_SEQUENCE_LIST, [])
   commit(types.SET_PLAYING_STATE, false)
+}
+
+export const savePlayHistory = function ({commit}, song) {
+  commit(types.SET_PLAY_HISTORY, savePlay(song))
 }

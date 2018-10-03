@@ -9,7 +9,10 @@
             <span class="clear" @click="showConfirm"><i class="icon-clear"></i></span>
           </h1>
         </div>
-        <scroll ref="listContent" class="list-content" :data="sequenceList">
+        <scroll ref="listContent"
+                class="list-content"
+                :refreshDelay="refreshDelay"
+                :data="sequenceList">
           <transition-group ref="list" name="list" tag="ul">
             <li class="item"
                 v-for="(item,index) in sequenceList"
@@ -27,7 +30,7 @@
           </transition-group>
         </scroll>
         <div class="list-operate">
-          <div class="add">
+          <div class="add" @click="addSong">
             <i class="icon-add"></i>
             <span class="text">添加歌曲到队列</span>
           </div>
@@ -39,7 +42,9 @@
       <confirm ref="confirm"
                text="是否清空播放列表"
                confirmBtnText="清空"
-               @confirm="confirmClear"></confirm>
+               @confirm="confirmClear">
+      </confirm>
+      <add-song ref="addSong"></add-song>
     </div>
   </transition>
 </template>
@@ -47,6 +52,7 @@
 <script type="text/ecmascript-6">
 import Confirm from 'components/confirm/confirm'
 import Scroll from 'components/scroll/scroll'
+import AddSong from 'components/add-song/add-song'
 import {mapActions} from 'vuex'
 import {playMode} from 'assets/js/config'
 import {playerMixin} from 'assets/js/mixin'
@@ -56,11 +62,13 @@ export default{
   name: 'Playlist',
   components: {
     Confirm,
-    Scroll
+    Scroll,
+    AddSong
   },
   data () {
     return {
-      showFlag: false
+      showFlag: false,
+      refreshDelay: 100
     }
   },
   computed: {
@@ -112,6 +120,9 @@ export default{
     confirmClear () {
       this.deleteSongList()
       this.hide()
+    },
+    addSong () {
+      this.$refs.addSong.show()
     },
     ...mapActions([
       'deleteSong',

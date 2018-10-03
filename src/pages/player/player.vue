@@ -109,7 +109,7 @@ import animations from 'create-keyframe-animation'
 import ProgressBar from 'components/progress-bar/progress-bar'
 import ProgressCircle from 'components/progress-circle/progress-circle'
 import Playlist from 'components/playlist/playlist'
-import {mapGetters, mapMutations} from 'vuex'
+import {mapGetters, mapMutations, mapActions} from 'vuex'
 import {prefixStyle} from 'assets/js/dom'
 import {playMode} from 'assets/js/config'
 import Lyric from 'lyric-parser'
@@ -261,6 +261,7 @@ export default {
     },
     ready () {
       this.songReady = true
+      this.savePlayHistory(this.currentSong)
     },
     error () {
       this.songReady = true
@@ -404,7 +405,10 @@ export default {
     },
     ...mapMutations({
       setFullScreen: 'SET_FULL_SCREEN'
-    })
+    }),
+    ...mapActions([
+      'savePlayHistory'
+    ])
   },
   watch: {
     currentSong (newSong, oldSong) {
