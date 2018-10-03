@@ -77,7 +77,6 @@ export default{
       this.$router.push({
         path: `/recommend/${item.id}`
       })
-      console.log(item)
       this.setTopList(item)
     },
     handlePlaylist (playlist) {
@@ -96,7 +95,6 @@ export default{
       getTopList().then((res) => {
         if (res.code === ERR_OK) {
           this.topList = res.data.topList
-          console.log(this.topList)
         }
       })
     },

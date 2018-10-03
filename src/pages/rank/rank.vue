@@ -59,7 +59,6 @@ export default {
       getTopList().then((res) => {
         if (res.code === ERR_OK) {
           this.topList = res.data.topList
-          console.log(this.topList)
         }
       })
     },

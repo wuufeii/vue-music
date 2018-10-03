@@ -35,7 +35,6 @@ export default {
       this.$router.push({
         path: `/singer/${singer.id}`
       })
-      console.log(singer)
       this.setSinger(singer)
     },
     handlePlaylist (playlist) {
@@ -47,7 +46,6 @@ export default {
       getSingerList().then((res) => {
         if (res.code === ERR_OK) {
           this.singers = this._normalizeSinger(res.data.list)
-          console.log(this.singers)
         }
       })
     },
