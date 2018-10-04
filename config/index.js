@@ -66,14 +66,14 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, '../dist/index.html'),
+    index: path.resolve(__dirname, '../music/index.html'),
 
     port: 9000,
 
     // Paths
-    assetsRoot: path.resolve(__dirname, '../dist'),
+    assetsRoot: path.resolve(__dirname, '../music'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: 'https://wuufeii.github.io/',
+    assetsPublicPath: '/',
 
     /**
      * Source Maps

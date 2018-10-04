@@ -89,6 +89,15 @@ npm run dev
 ### 项目的构建命令
 npm run build
 
+*注：项目*
+项目构建完成后将会生成一个music的镜头文件，如果需要预览静态文件进行下一步
+
+### 项目本地服务
+node prod.server.js  //此时运行 http://localhost:9000查看项目
+
 ###以下命令来查看依赖关系.然后再根据具体情况划分代码块.
 npm run build --report
 ```
+
+*注：项目* <br />
+   *如果使用pc浏览器，请调成手机模拟查看* <br />

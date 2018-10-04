@@ -49,7 +49,7 @@ apiRoutes.get('/lyric', function (req, res) {
 
 app.use('/api', apiRoutes)
 
-app.use(express.static('./dist'))
+app.use(express.static('./music'))
 
 module.exports = app.listen(port, function (err) {
   if (err) {
